@@ -18,30 +18,29 @@ struct tree_node
     tree_node(std::string, std::vector<tree_node>);
 
     std::string to_string() const;
+    void print(std::ostream&, size_t const depth = 0) const;
 
-    friend std::ofstream& operator<<(std::ofstream&, tree_node const&);
+    friend std::ostream& operator<<(std::ostream&, tree_node const&);
 };
 
-std::ofstream& operator<<(std::ofstream&, tree_node const&);
+std::ostream& operator<<(std::ostream&, tree_node const&);
 
 class tree
 {
     tree_node root;
 
-    std::string to_string() const;
-
-    friend std::ofstream& operator<<(std::ofstream&, tree const&);
+    friend std::ostream& operator<<(std::ostream&, tree const&);
 
 public:
-    tree(tree_node);
+    explicit tree(tree_node);
 };
 
-std::ofstream& operator<<(std::ofstream&, tree const&);
+std::ostream& operator<<(std::ostream&, tree const&);
 
 class parser
 {
     lexer lex;
-//TODO: add parse_ampersand
+
     tree_node parse_declaration_list();
     tree_node parse_rest_declarations();
     tree_node parse_single_declaration();

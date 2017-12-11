@@ -12,7 +12,7 @@ class lexer
     token_t token;
 
 public:
-    lexer(char const*, char const*);
+    explicit lexer(char const*, char const*);
 
     void next();
     token_t cur_token() const noexcept;

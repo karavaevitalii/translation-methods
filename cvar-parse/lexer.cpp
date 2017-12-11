@@ -1,24 +1,34 @@
 #include "lexer.h"
 
-#include <cassert>
+#include <stdexcept>
+#include <sstream>
 
-bool is_whitespace(char c)
+namespace
 {
-    return c <= ' ';
-}
+    bool is_whitespace(char c)
+    {
+        return c <= ' ';
+    }
 
-bool is_identifier_start(char c)
-{
-    return (c >= 'a' && c <= 'z') ||
-           (c >= 'A' && c <= 'Z') ||
-            c == '_';
-}
+    bool is_identifier_start(char c)
+    {
+        return (c >= 'a' && c <= 'z') ||
+               (c >= 'A' && c <= 'Z') ||
+                c == '_';
+    }
 
-bool is_identifier_trail(char c)
-{
-    return is_identifier_start(c) ||
-           (c >= '0' && c <= '9');
-}
+    bool is_identifier_trail(char c)
+    {
+        return is_identifier_start(c) ||
+               (c >= '0' && c <= '9');
+    }
+
+    void skip_newline(char const*& c)
+    {
+        while (*c == '\n')
+            ++c;
+    }
+} //namespace
 
 lexer::lexer(char const * start, char const* end)
     : cur{start},
@@ -29,6 +39,7 @@ lexer::lexer(char const * start, char const* end)
 
 void lexer::next()
 {
+    skip_newline(cur);
     if (cur == end)
     {
         token = token_t::end;
@@ -65,8 +76,12 @@ void lexer::next()
 
             token = token_t::id;
         }
-        else //TODO throw exception
-            assert(false);
+        else
+        {
+            std::stringstream ss;
+            ss << "unknown token: " << *cur;
+            throw std::runtime_error{ss.str()};
+        }
     }
 }
 

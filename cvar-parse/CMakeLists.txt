@@ -14,5 +14,4 @@ add_executable(parser
     "main.cpp"
     "parser.cpp"            "parser.h"
     "token.cpp"             "token.h"
-    "lexer.cpp"             "lexer.h"
-    "parser_exception.cpp"  "parser_exception.h")
+    "lexer.cpp"             "lexer.h")
