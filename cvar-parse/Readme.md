@@ -38,8 +38,8 @@ $|end
 
 ## Нетерминалы
 
-FIRST|FOLLOW
----|---
+|FIRST|FOLLOW
+---|---|---
 S|id|$
 S'|id, eps|$
 D|id|id, $
