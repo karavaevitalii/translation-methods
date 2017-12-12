@@ -30,7 +30,7 @@ namespace
     }
 } //namespace
 
-lexer::lexer(char const * start, char const* end)
+lexer::lexer(char const* start, char const* end)
     : cur{start},
       end{end}
 {

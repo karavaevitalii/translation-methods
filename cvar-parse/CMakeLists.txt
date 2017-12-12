@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -W -Wconversion \
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
-add_executable(parser
+add_executable(parse
     "main.cpp"
     "parser.cpp"            "parser.h"
     "token.cpp"             "token.h"

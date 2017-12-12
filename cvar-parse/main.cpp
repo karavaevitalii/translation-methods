@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     {
         if (argc < 2)
         {
-            std::cerr << "usage: ./parser <input> <output>" << std::endl;
+            std::cerr << "usage: ./parse <input_file> <output_file.svg>" << std::endl;
             return EXIT_SUCCESS;
         }
 
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
         if (argc > 2)
         {
             std::ofstream os{argv[2]};
-            os << t << std::endl;
+            t.print_tree(os);
         }
         else
             std::cout << t << std::endl;

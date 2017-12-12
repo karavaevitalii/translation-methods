@@ -7,15 +7,15 @@ std::string to_string(token_t const token)
     case token_t::id:
         return "<identifier>";
     case token_t::star:
-        return "*";
+        return "<*>";
     case token_t::ampersand:
-        return "&";
+        return "<&>";
     case token_t::comma:
-        return ",";
+        return "<,>";
     case token_t::semicolon:
-        return ";";
+        return "<;>";
     default:
-        return "$";
+        return "<$>";
     }
 }
 
