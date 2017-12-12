@@ -38,14 +38,14 @@ $|end
 
 ## Нетерминалы
 
-|FIRST|FOLLOW
----|---|---
-S|id|$
-S'|id, eps|$
-D|id|id, $
-T|id|&, *, id|
-V|&. *, id|semicolon
-V'|comma, eps|semicolon
-X|&,*,id|comma, semicolon
-X'|*,id|comma, semicolon
-N|id|comma, semicolon
+|   |FIRST|FOLLOW|
+|---|---|---|
+|S|id|$|
+|S'|id, eps|$|
+|D|id|id, $|
+|T|id|&, *, id|
+|V|&. *, id|semicolon|
+|V'|comma, eps|semicolon|
+|X|&,*,id|comma, semicolon|
+|X'|*,id|comma, semicolon|
+|N|id|comma, semicolon|
