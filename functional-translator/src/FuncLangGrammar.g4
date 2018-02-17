@@ -70,39 +70,41 @@ expr returns [String expression]
     : e1 = expr binop e2 = expr {
         StringBuilder sb = new StringBuilder($e1.expression);
         sb.append(" ")
-            .append($binop.binOp)
+            .append($binop.text)
             .append(" ")
             .append($e2.expression);
 
         $expression =  sb.toString();
     }
-    | unop expr { $expression = $unop.unOp + $expr.expression; }
-    | innerfunc { $expression = $innerfunc.innerFunc; }
-    | '(' expr ')' { $expression = "(" + $expr.expression + ")"; }
-    | ID {$expression = $ID.text;}
-    | BOOL {$expression = $BOOL.text;}
-    | INT {$expression = $INT.text;}
-    | FLOAT {$expression = $FLOAT.text;}
-    | STRING {$expression = $STRING.text;}
+    | unop expr {
+        $expression = $unop.text + $expr.expression;
+    }
+    | innerfunc     { $expression = $innerfunc.innerFunc;           }
+    | '(' expr ')'  { $expression = "(" + $expr.expression + ")";   }
+    | ID            { $expression = $ID.text;                       }
+    | BOOL          { $expression = $BOOL.text;                     }
+    | INT           { $expression = $INT.text;                      }
+    | FLOAT         { $expression = $FLOAT.text;                    }
+    | STRING        { $expression = $STRING.text;                   }
     ;
 
-binop returns [String binOp]
-    : MUL   { $binOp = "*";     }
-    | DIV   { $binOp = "/";     }
-    | SUB   { $binOp = "-";     }
-    | ADD   { $binOp = "+";     }
-    | AND   { $binOp = "&&";    }
-    | OR    { $binOp = "||";    }
-    | EQ    { $binOp = "==";    }
-    | NE    { $binOp = "!=";    }
-    | LT    { $binOp = "<";     }
-    | LE    { $binOp = "<=";    }
-    | GT    { $binOp = ">";     }
-    | GE    { $binOp = ">=";    }
+binop
+    : '*'
+    | '/'
+    | '-'
+    | '+'
+    | '&&'
+    | '||'
+    | '=='
+    | '!='
+    | '<'
+    | '<='
+    | '>'
+    | '>='
     ;
 
-unop returns [String unOp = "!"]
-    : NOT
+unop
+    : '!'
     ;
 
 innerfunc returns [String innerFunc]
@@ -163,21 +165,5 @@ fragment DIGIT
 STRING
     : '"' ( '\\"' | . )*? '"'
     ;
-
-MUL : '*';
-DIV : '/';
-ADD : '+';
-SUB : '-';
-
-AND : '&&';
-OR  : '||';
-NOT : '!';
-
-EQ : '==';
-NE : '!=';
-GT : '>';
-GE : '>=';
-LT : '<';
-LE : '<=';
 
 WS  : [ \t\r\n]+ -> skip ;
