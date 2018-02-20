@@ -59,10 +59,21 @@ ifstat returns [String ifStat]
 
 elseclause returns [String elseClause]
     : 'else' stat {
+        String statement = $stat.statement;
         StringBuilder sb = new StringBuilder("else:\n    ");
-        sb.append($stat.statement);
+        sb.append(statement);
 
         $elseClause = sb.toString();
+    }
+    | 'elif' expr 'then' stat elseclause* {
+              StringBuilder sb = new StringBuilder("elif ");
+              sb.append($expr.expression)
+                  .append(":\n    ")
+                  .append($stat.statement)
+                  .append("\n    ")
+                  .append($elseclause.elseClause);
+
+              $elseClause = sb.toString();
     }
     ;
 
