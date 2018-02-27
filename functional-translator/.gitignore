@@ -34,3 +34,6 @@ buildNumber.properties
 ._*
 
 *./
+
+gen/
+test.func

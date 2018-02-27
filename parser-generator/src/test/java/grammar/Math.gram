@@ -1,0 +1,71 @@
++package grammar.generated
+
+|> expr -> Integer
+
+expr() -> Integer :=
+    term sum({ _term1 }) {
+        return _sum1
+    }
+    ;
+
+sum(Integer i) -> Integer :=
+    { return i }
+    | PLUS term sum({ i + _term1 }) {
+        return _sum1
+    }
+    | MINUS term sum({ i - _term1 }) {
+        return _sum1
+    }
+    ;
+
+term() -> Integer :=
+    pterm mul({ _pterm1 }) {
+        return _mul1
+    }
+    ;
+
+mul(Integer i) -> Integer :=
+    { return i }
+    | MUL pterm mul({ i * _pterm1 }) {
+        return _mul1
+    }
+    ;
+
+pterm() -> Integer :=
+    fact pow({ _fact1 }) {
+        return _pow1
+    }
+    ;
+
+pow(Integer i) -> Integer :=
+    { return i }
+    | POW pterm pow({ (int) Math.pow(i, _pterm1) }) {
+        return _pow1
+    }
+    ;
+
+fact() -> Integer :=
+    L_PAR expr R_PAR {
+        return _expr1
+    }
+    | NUMBER {
+        return Integer.parseInt(_NUMBER1)
+    }
+    ;
+
+NUMBER :=
+    '0' | '1'     | '2'   | '3'   | '4'   | '5'   | '6'   | '7'   | '8'   | '9'
+        | '-1'    | '-2'  | '-3'  | '-4'  | '-5'  | '-6'  | '-7'  | '-8'  | '-9'
+    ;
+
+PLUS := '+';
+
+MINUS := '-';
+
+MUL := '*';
+
+POW := '^';
+
+L_PAR := '(';
+
+R_PAR := ')';
