@@ -1,5 +1,6 @@
 package ru.ifmo.ctddev.karavaev.translations.generator.impl;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import ru.ifmo.ctddev.karavaev.translations.generator.Generator;
 import ru.ifmo.ctddev.karavaev.translations.generator.impl.utils.GeneratorContext;
 import ru.ifmo.ctddev.karavaev.translations.generator.impl.utils.Production;
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LexerGenerator extends GeneratorBase implements Generator {
     private static final String LEXER = "Lexer";
@@ -58,19 +60,27 @@ public class LexerGenerator extends GeneratorBase implements Generator {
         context.printReturnStatement(tokens + ".EOF");
         context.printIfEnd();
 
+        final Map<String, String> sortedTerms =
+                new TreeMap<String, String>(Collections.reverseOrder());
         for (Map.Entry<String, Rule> term : listener.getTerminals().entrySet()) {
             if (!(EPS.equals(term.getKey())) && !(EOF.equals(term.getKey()))) {
                 for (Production production : term.getValue().getProductions()) {
+                    sortedTerms.put(production.getRules().get(0).getName(), term.getKey());
                     final String token = production.getRules().get(0).getName();
                     final String tokName = term.getKey();
-                    context.printIfBegin("(expression.startsWith(\"" + token + "\", pos))");
-                    context.printStatement("pos += \"" + token + "\".length()");
-                    context.printExpression("curToken", tokens + "." + tokName);
-                    context.printStatement("curTokenText = \"" + token + "\"");
-                    context.printReturnStatement(tokens + "." + tokName);
-                    context.printIfEnd();
+
                 }
             }
+        }
+        for (Map.Entry<String, String> term : sortedTerms.entrySet()) {
+            final String token = term.getKey();
+            final String tokName = term.getValue();
+            context.printIfBegin("(expression.startsWith(\"" + token + "\", pos))");
+            context.printStatement("pos += \"" + token + "\".length()");
+            context.printExpression("curToken", tokens + "." + tokName);
+            context.printStatement("curTokenText = \"" + token + "\"");
+            context.printReturnStatement(tokens + "." + tokName);
+            context.printIfEnd();
         }
         context.printStatement("throw new IllegalStateException(\"Unknown token from pos \" + pos)");
         context.printMethodEnd();

@@ -10,12 +10,33 @@ public class MathParser {
         return expr();
     }
 
-    private Integer fact() {
+    private Integer number() {
         MathTokens token = lex.getCurToken();
         if (MathTokens.NUMBER == token) {
             String _NUMBER1 = lex.getCurTokenText();
             lex.getNextToken();
             return Integer.parseInt(_NUMBER1);
+        }
+        if (MathTokens.HEX == token) {
+            String _HEX1 = lex.getCurTokenText();
+            lex.getNextToken();
+            String _NUMBER1 = lex.getCurTokenText();
+            lex.getNextToken();
+            return Integer.parseInt(_NUMBER1, 16);
+        }
+        if (MathTokens.MINUS == token) {
+            String _MINUS1 = lex.getCurTokenText();
+            lex.getNextToken();
+            return -1 * number();
+        }
+        throw new AssertionError();
+    }
+
+    private Integer fact() {
+        MathTokens token = lex.getCurToken();
+        if (MathTokens.NUMBER == token) {
+            Integer _number1 = number();
+            return _number1;
         }
         if (MathTokens.L_PAR == token) {
             String _L_PAR1 = lex.getCurTokenText();
@@ -24,6 +45,14 @@ public class MathParser {
             String _R_PAR1 = lex.getCurTokenText();
             lex.getNextToken();
             return _expr1;
+        }
+        if (MathTokens.HEX == token) {
+            Integer _number1 = number();
+            return _number1;
+        }
+        if (MathTokens.MINUS == token) {
+            Integer _number1 = number();
+            return _number1;
         }
         throw new AssertionError();
     }
@@ -91,6 +120,16 @@ public class MathParser {
             Integer _sum1 = sum(_term1);
             return _sum1;
         }
+        if (MathTokens.HEX == token) {
+            Integer _term1 = term();
+            Integer _sum1 = sum(_term1);
+            return _sum1;
+        }
+        if (MathTokens.MINUS == token) {
+            Integer _term1 = term();
+            Integer _sum1 = sum(_term1);
+            return _sum1;
+        }
         throw new AssertionError();
     }
 
@@ -131,6 +170,16 @@ public class MathParser {
             Integer _mul1 = mul(_pterm1);
             return _mul1;
         }
+        if (MathTokens.HEX == token) {
+            Integer _pterm1 = pterm();
+            Integer _mul1 = mul(_pterm1);
+            return _mul1;
+        }
+        if (MathTokens.MINUS == token) {
+            Integer _pterm1 = pterm();
+            Integer _mul1 = mul(_pterm1);
+            return _mul1;
+        }
         throw new AssertionError();
     }
 
@@ -142,6 +191,16 @@ public class MathParser {
             return _pow1;
         }
         if (MathTokens.L_PAR == token) {
+            Integer _fact1 = fact();
+            Integer _pow1 = pow(_fact1);
+            return _pow1;
+        }
+        if (MathTokens.HEX == token) {
+            Integer _fact1 = fact();
+            Integer _pow1 = pow(_fact1);
+            return _pow1;
+        }
+        if (MathTokens.MINUS == token) {
             Integer _fact1 = fact();
             Integer _pow1 = pow(_fact1);
             return _pow1;

@@ -6,6 +6,7 @@ public enum MathTokens {
     L_PAR,
     EPS,
     POW,
+    HEX,
     R_PAR,
     EOF,
     PLUS,
