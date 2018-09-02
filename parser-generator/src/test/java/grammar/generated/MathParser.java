@@ -10,24 +10,23 @@ public class MathParser {
         return expr();
     }
 
-    private Integer number() {
+    private Integer number(Integer radix, Integer i) {
         MathTokens token = lex.getCurToken();
         if (MathTokens.NUMBER == token) {
             String _NUMBER1 = lex.getCurTokenText();
             lex.getNextToken();
-            return Integer.parseInt(_NUMBER1);
+            return Integer.parseInt(_NUMBER1, radix);
         }
         if (MathTokens.HEX == token) {
             String _HEX1 = lex.getCurTokenText();
             lex.getNextToken();
-            String _NUMBER1 = lex.getCurTokenText();
-            lex.getNextToken();
-            return Integer.parseInt(_NUMBER1, 16);
+            Integer _number1 = number(16, 0);
+            return _number1;
         }
         if (MathTokens.MINUS == token) {
             String _MINUS1 = lex.getCurTokenText();
             lex.getNextToken();
-            return -1 * number();
+            return -1 * number(radix, i);
         }
         throw new AssertionError();
     }
@@ -35,7 +34,7 @@ public class MathParser {
     private Integer fact() {
         MathTokens token = lex.getCurToken();
         if (MathTokens.NUMBER == token) {
-            Integer _number1 = number();
+            Integer _number1 = number(10, 0);
             return _number1;
         }
         if (MathTokens.L_PAR == token) {
@@ -47,11 +46,11 @@ public class MathParser {
             return _expr1;
         }
         if (MathTokens.HEX == token) {
-            Integer _number1 = number();
+            Integer _number1 = number(10, 0);
             return _number1;
         }
         if (MathTokens.MINUS == token) {
-            Integer _number1 = number();
+            Integer _number1 = number(10, 0);
             return _number1;
         }
         throw new AssertionError();

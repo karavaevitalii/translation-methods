@@ -48,20 +48,20 @@ fact() -> Integer :=
     L_PAR expr R_PAR {
         return _expr1
     }
-    | number {
+    | number({10, 0}) {
         return _number1
     }
     ;
 
-number() -> Integer :=
+number(Integer radix, Integer i) -> Integer :=
     MINUS {
-        return -1 * number()
+        return -1 * number(radix, i)
     }
-    | HEX NUMBER {
-        return Integer.parseInt(_NUMBER1, 16)
+    | HEX number({16, 0}) {
+        return _number1
     }
     | NUMBER {
-        return Integer.parseInt(_NUMBER1)
+        return Integer.parseInt(_NUMBER1, radix)
     }
     ;
 
